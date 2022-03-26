@@ -19,7 +19,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-        
+        mavenCentral() /* Para acesso a API RoundedImageView */
     }
 }
 
