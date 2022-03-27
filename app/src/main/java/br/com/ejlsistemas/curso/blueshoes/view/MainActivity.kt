@@ -1,6 +1,7 @@
 package br.com.ejlsistemas.curso.blueshoes.view
 
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
@@ -36,6 +37,10 @@ class MainActivity : AppCompatActivity() {
     lateinit var selectNavMenuItems: SelectionTracker<Long>
     lateinit var selectNavMenuItemsLogged: SelectionTracker<Long>
 
+    companion object {
+        const val FRAGMENT_TAG = "frag-tag"
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -51,6 +56,47 @@ class MainActivity : AppCompatActivity() {
         toggle.syncState()
 
         initNavMenu(savedInstanceState)
+
+        initFragment()
+    }
+
+    private fun initFragment() {
+        val supFrag = supportFragmentManager
+        var fragment = supFrag.findFragmentByTag(FRAGMENT_TAG)
+
+        /*
+         * Se não for uma reconstrução de atividade, então não
+         * haverá um fragmento em memória, então busca-se o
+         * inicial.
+         * */
+        if (fragment == null) {
+            fragment = getFragment(R.id.item_about.toLong())
+        }
+
+        replaceFragment(fragment)
+    }
+
+    private fun getFragment(fragmentId: Long) =
+        when (fragmentId) {
+            R.id.item_about.toLong() -> AboutFragment()
+            else -> AboutFragment()
+        }
+
+    private fun replaceFragment(fragment: Fragment) {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(
+                R.id.fl_fragment_container,
+                fragment,
+                FRAGMENT_TAG
+            ).commit()
+    }
+
+    /**
+     * Mudança de título na barra de título
+     */
+    fun updateToolbarTitleInFragment(titleStringId: Int) {
+        toolbar.title = getString(titleStringId)
     }
 
     override fun onBackPressed() {
@@ -268,6 +314,14 @@ class MainActivity : AppCompatActivity() {
 
             /*
              * Fechando o menu gaveta.
+             * */
+            drawer_layout.closeDrawer(GravityCompat.START)
+
+            val fragment = getFragment(key)
+            replaceFragment(fragment)
+
+            /*
+             * Frechando o menu gaveta
              * */
             drawer_layout.closeDrawer(GravityCompat.START)
         }
