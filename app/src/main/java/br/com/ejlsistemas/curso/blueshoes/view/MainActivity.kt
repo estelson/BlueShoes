@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.nav_header_user_logged.*
 import kotlinx.android.synthetic.main.nav_header_user_not_logged.*
 import kotlinx.android.synthetic.main.nav_menu.*
 
-class MainActivity : AppCompatActivity() {
+class MainActivity: AppCompatActivity() {
 
     val user = User(
         "Estelson Medeiros Pereira",
@@ -69,18 +69,21 @@ class MainActivity : AppCompatActivity() {
          * haverá um fragmento em memória, então busca-se o
          * inicial.
          * */
-        if (fragment == null) {
+        if(fragment == null) {
             fragment = getFragment(R.id.item_about.toLong())
         }
 
         replaceFragment(fragment)
     }
 
-    private fun getFragment(fragmentId: Long) =
-        when (fragmentId) {
+    private fun getFragment(fragId: Long): Fragment {
+        return when(fragId) {
             R.id.item_about.toLong() -> AboutFragment()
+            R.id.item_contact.toLong() -> ContactFragment()
+
             else -> AboutFragment()
         }
+    }
 
     private fun replaceFragment(fragment: Fragment) {
         supportFragmentManager
@@ -100,7 +103,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
+        if(drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
         } else {
             super.onBackPressed()
@@ -123,7 +126,7 @@ class MainActivity : AppCompatActivity() {
          * cliques no botão Home / Up, desde que seja
          * especificada uma atividade pai em AndroidManifest.xml.
          */
-        when (item.itemId) {
+        when(item.itemId) {
             R.id.action_settings -> return true
             else -> return super.onOptionsItemSelected(item)
         }
@@ -231,7 +234,7 @@ class MainActivity : AppCompatActivity() {
         initNavMenuItems()
         initNavMenuItemsLogged()
 
-        if (savedInstanceState != null) {
+        if(savedInstanceState != null) {
             selectNavMenuItems.onRestoreInstanceState(savedInstanceState)
             selectNavMenuItemsLogged.onRestoreInstanceState(savedInstanceState)
         } else {
@@ -248,7 +251,7 @@ class MainActivity : AppCompatActivity() {
      * Responsável pelo preenchimento de dados no cabeçalho de menu quando com usuário conectado.
      */
     private fun fillUserHeaderNavMenu() {
-        if (user.status) { /* Conectado */
+        if(user.status) { /* Conectado */
             iv_user.setImageResource(user.image)
             tv_user.text = user.name
         }
@@ -259,7 +262,7 @@ class MainActivity : AppCompatActivity() {
      * acordo com o status do usuário (conectado ou não).
      * */
     private fun showHideNavMenuViews() {
-        if (user.status) { /* Conectado */
+        if(user.status) { /* Conectado */
             rl_header_user_not_logged.visibility = View.GONE
             fillUserHeaderNavMenu()
         } else {  /* Não conectado */
@@ -269,7 +272,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    inner class SelectObserverNavMenuItems(val callbackRemoveSelection: () -> Unit) :
+    inner class SelectObserverNavMenuItems(val callbackRemoveSelection: () -> Unit):
         SelectionTracker.SelectionObserver<Long>() {
 
         /*
@@ -292,7 +295,7 @@ class MainActivity : AppCompatActivity() {
              * abaixo é somente para itens obtendo a seleção,
              * selected = true.
              * */
-            if (!selected) {
+            if(!selected) {
                 return
             }
 
