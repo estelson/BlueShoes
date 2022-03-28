@@ -1,5 +1,6 @@
 package br.com.ejlsistemas.curso.blueshoes.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.view.GravityCompat
@@ -29,7 +30,7 @@ class MainActivity: AppCompatActivity() {
     val user = User(
         "Estelson Medeiros Pereira",
         R.drawable.user,
-        true
+        false
     )
 
     lateinit var navMenuItems: List<NavMenuItem>
@@ -94,6 +95,11 @@ class MainActivity: AppCompatActivity() {
                 fragment,
                 FRAGMENT_TAG
             ).commit()
+    }
+
+    fun callLoginActivity(view: View) {
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
     }
 
     /**
