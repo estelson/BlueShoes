@@ -3,6 +3,7 @@ package br.com.ejlsistemas.curso.blueshoes.view
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.os.SystemClock
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v4.content.res.ResourcesCompat
@@ -10,15 +11,17 @@ import android.support.v7.app.AppCompatActivity
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ImageSpan
+import android.view.KeyEvent
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import br.com.ejlsistemas.curso.blueshoes.R
 import kotlinx.android.synthetic.main.app_bar.*
+import kotlinx.android.synthetic.main.content_form.*
 import kotlinx.android.synthetic.main.proxy_screen.*
 
-abstract class FormActivity: AppCompatActivity() {
+abstract class FormActivity: AppCompatActivity(), TextView.OnEditorActionListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,11 +64,7 @@ abstract class FormActivity: AppCompatActivity() {
      * back-end Web.
      * */
     protected fun snackBarFeedback(viewContainer: ViewGroup, status: Boolean, message: String) {
-        val snackBar = Snackbar.make(
-            viewContainer,
-            message,
-            Snackbar.LENGTH_LONG
-        )
+        val snackBar = Snackbar.make(viewContainer, message, Snackbar.LENGTH_LONG)
 
         /*
          * Criando o objeto Drawable que entrará como ícone
@@ -77,40 +76,22 @@ abstract class FormActivity: AppCompatActivity() {
             R.drawable.ic_close_black_18dp
         }
 
-        val img = ResourcesCompat.getDrawable(
-            resources,
-            iconResource,
-            null
-        )
-
-        img!!.setBounds(
-            0,
-            0,
-            img.intrinsicWidth,
-            img.intrinsicHeight
-        )
+        val img = ResourcesCompat.getDrawable(resources, iconResource, null)
+        img!!.setBounds(0, 0, img.intrinsicWidth, img.intrinsicHeight)
 
         val iconColor = if(status) {
-            ContextCompat.getColor(
-                this,
-                R.color.colorNavButton
-            )
+            ContextCompat.getColor(this, R.color.colorNavButton)
         } else {
             Color.RED
         }
 
-        img.setColorFilter(
-            iconColor,
-            PorterDuff.Mode.SRC_ATOP
-        )
+        img.setColorFilter(iconColor, PorterDuff.Mode.SRC_ATOP)
 
         /*
          * Acessando o TextView padrão do SnackBar para assim
          * colocarmos um ícone nele via objeto Spannable.
          * */
-        val textView = snackBar.view.findViewById(
-            android.support.design.R.id.snackbar_text
-        ) as TextView
+        val textView = snackBar.view.findViewById(android.support.design.R.id.snackbar_text) as TextView
 
         /*
          * O espaçamento aplicado como parte do argumento
@@ -119,16 +100,35 @@ abstract class FormActivity: AppCompatActivity() {
          * informado em protótipo estático.
          * */
         val spannedText = SpannableString("     ${textView.text}")
-        spannedText.setSpan(
-            ImageSpan(img, ImageSpan.ALIGN_BOTTOM),
-            0,
-            1,
-            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
+        spannedText.setSpan(ImageSpan(img, ImageSpan.ALIGN_BOTTOM), 0, 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         textView.setText(spannedText, TextView.BufferType.SPANNABLE)
 
         snackBar.show()
+    }
+
+    /*
+     * Fake method - Somente para testes temporários em atividades
+     * e fragmentos que contêm formulários.
+     * */
+    protected fun backEndFakeDelay(statusAction: Boolean, feedbackMessage: String) {
+        Thread {
+            kotlin.run {
+                /*
+                 * Simulando um delay de latência de
+                 * 1 segundo.
+                 * */
+                SystemClock.sleep(1000)
+
+                runOnUiThread {
+                    blockFields(false)
+                    isMainButtonSending(false)
+                    showProxy(false)
+
+                    snackBarFeedback(fl_form_container, statusAction, feedbackMessage)
+                }
+            }
+        }.start()
     }
 
     /*
@@ -143,6 +143,17 @@ abstract class FormActivity: AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    /*
+     * Caso o usuário toque no botão "Done" do teclado virtual
+     * ao invés de tocar no botão "Entrar". Mesmo assim temos
+     * de processar o formulário.
+     * */
+    override fun onEditorAction(view: TextView, actionId: Int, event: KeyEvent?): Boolean {
+        mainAction()
+
+        return false /* Indica que o algoritmo do método consumiu o evento. */
     }
 
     /*

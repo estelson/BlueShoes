@@ -2,12 +2,9 @@ package br.com.ejlsistemas.curso.blueshoes.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.SystemClock
 import android.support.constraint.ConstraintLayout
 import android.support.constraint.ConstraintSet
-import android.view.KeyEvent
 import android.view.View
-import android.widget.TextView
 import android.widget.Toast
 import br.com.ejlsistemas.curso.blueshoes.R
 import br.com.ejlsistemas.curso.blueshoes.util.isValidEmail
@@ -21,7 +18,6 @@ import kotlinx.android.synthetic.main.text_view_privacy_policy_login.*
 
 class LoginActivity:
     FormActivity(),
-    TextView.OnEditorActionListener,
     KeyboardUtils.OnSoftInputChangedListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,7 +69,12 @@ class LoginActivity:
      * Listeners de clique dos links da tela de login
      * */
     fun callForgotPasswordActivity(view: View) {
-        Toast.makeText(this, "TODO: callForgotPasswordActivity()", Toast.LENGTH_SHORT).show()
+        val intent = Intent(
+            this,
+            ForgotPasswordActivity::class.java
+        )
+
+        startActivity(intent)
     }
 
     fun callSignUpActivity(view: View) {
@@ -100,17 +101,6 @@ class LoginActivity:
         startActivity(intent)
     }
 
-    /*
-     * Caso o usuário toque no botão "Done" do teclado virtual
-     * ao invés de tocar no botão "Entrar". Mesmo assim temos
-     * de processar o formulário.
-     * */
-    override fun onEditorAction(view: TextView, actionId: Int, event: KeyEvent?): Boolean {
-        mainAction()
-
-        return false /* Indica que o algoritmo do método consumiu o evento. */
-    }
-
     override fun onDestroy() {
         KeyboardUtils.unregisterSoftInputChangedListener(this)
 
@@ -127,7 +117,8 @@ class LoginActivity:
         blockFields(true)
         isMainButtonSending(true)
         showProxy(true)
-        backEndFakeDelay()
+
+        backEndFakeDelay(false, getString(R.string.invalid_login))
     }
 
     /*
@@ -158,26 +149,6 @@ class LoginActivity:
         } else {
             getString(R.string.sign_in) /* Entrar */
         }
-    }
-
-    private fun backEndFakeDelay() {
-        Thread {
-            kotlin.run {
-                /*
-                 * Simulando um delay de latência de
-                 * 1 segundo.
-                 * */
-                SystemClock.sleep(1000)
-
-                runOnUiThread {
-                    blockFields(false)
-                    isSignInGoing(false)
-                    showProxy(false)
-
-                    snackBarFeedback(fl_form_container, false, getString(R.string.invalid_login))
-                }
-            }
-        }.start()
     }
 
     /*
