@@ -20,7 +20,7 @@ import br.com.ejlsistemas.curso.blueshoes.util.NavMenuItemDetailsLookup
 import br.com.ejlsistemas.curso.blueshoes.util.NavMenuItemKeyProvider
 import br.com.ejlsistemas.curso.blueshoes.util.NavMenuItemPredicate
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.app_bar_main.*
+import kotlinx.android.synthetic.main.app_bar.*
 import kotlinx.android.synthetic.main.nav_header_user_logged.*
 import kotlinx.android.synthetic.main.nav_header_user_not_logged.*
 import kotlinx.android.synthetic.main.nav_menu.*
@@ -40,6 +40,7 @@ class MainActivity: AppCompatActivity() {
 
     companion object {
         const val FRAGMENT_TAG = "frag-tag"
+        const val FRAGMENT_ID = "frag-id"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,7 +72,17 @@ class MainActivity: AppCompatActivity() {
          * inicial.
          * */
         if(fragment == null) {
-            fragment = getFragment(R.id.item_about.toLong())
+            /*
+             * Caso haja algum ID de fragmento em intent, então
+             * é este fragmento que deve ser acionado. Caso
+             * contrário, abra o fragmento comum de início.
+             * */
+            var fragId = intent?.getIntExtra(FRAGMENT_ID, 0)
+            if(fragId == 0) {
+                fragId = R.id.item_about
+            }
+
+            fragment = getFragment(fragId!!.toLong())
         }
 
         replaceFragment(fragment)
@@ -246,11 +257,21 @@ class MainActivity: AppCompatActivity() {
             selectNavMenuItemsLogged.onRestoreInstanceState(savedInstanceState)
         } else {
             /*
-             * O primeiro item do menu gaveta deve estar selecionado
-             * caso não seja uma reinicialização de tela / atividade.
-             * O primeiro item aqui é o de ID 1.
+             * Verificando se há algum item ID em intent. Caso não,
+             * utilize o ID do primeiro item.
              * */
-            selectNavMenuItems.select(R.id.item_all_shoes.toLong())
+            var fragId = intent?.getIntExtra(FRAGMENT_ID, 0)
+            if(fragId == 0) {
+                fragId = R.id.item_all_shoes
+            }
+
+            /*
+             * O primeiro item do menu gaveta deve estar selecionado
+             * caso não seja uma reinicialização de tela / atividade
+             * ou o envio de um ID especifico de fragmento a ser aberto.
+             * O primeiro item aqui é o de ID R.id.item_all_shoes.
+             * */
+            selectNavMenuItems.select(fragId!!.toLong())
         }
     }
 

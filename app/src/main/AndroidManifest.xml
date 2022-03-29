@@ -12,7 +12,6 @@
         <activity
                 android:name=".view.LoginActivity"
                 android:label="@string/title_activity_login"
-                android:parentActivityName=".view.MainActivity"
                 android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                     android:name="android.support.PARENT_ACTIVITY"
