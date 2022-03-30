@@ -2,8 +2,8 @@ package br.com.ejlsistemas.curso.blueshoes.view
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.constraint.ConstraintLayout
-import android.support.constraint.ConstraintSet
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import android.view.View
 import br.com.ejlsistemas.curso.blueshoes.R
 import com.blankj.utilcode.util.KeyboardUtils
@@ -65,7 +65,7 @@ abstract class FormEmailAndPasswordActivity:
          * fica com largura e altura em 0dp.
          * */
         constraintSet.constrainWidth(privacyId, ConstraintLayout.LayoutParams.WRAP_CONTENT)
-        constraintSet.constrainHeight(privacyId,ConstraintLayout.LayoutParams.WRAP_CONTENT)
+        constraintSet.constrainHeight(privacyId, ConstraintLayout.LayoutParams.WRAP_CONTENT)
 
         /*
          * Centralizando a View horizontalmente no

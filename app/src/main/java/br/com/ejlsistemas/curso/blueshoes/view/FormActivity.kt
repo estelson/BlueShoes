@@ -4,10 +4,10 @@ import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.SystemClock
-import android.support.design.widget.Snackbar
-import android.support.v4.content.ContextCompat
-import android.support.v4.content.res.ResourcesCompat
-import android.support.v7.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
+import androidx.appcompat.app.AppCompatActivity
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ImageSpan
@@ -97,7 +97,7 @@ abstract class FormActivity: AppCompatActivity(), TextView.OnEditorActionListene
          * Acessando o TextView padrão do SnackBar para assim
          * colocarmos um ícone nele via objeto Spannable.
          * */
-        val textView = snackBar.view.findViewById(android.support.design.R.id.snackbar_text) as TextView
+        val textView = snackBar.view.findViewById(R.id.snackbar_text) as TextView
 
         /*
          * O espaçamento aplicado como parte do argumento

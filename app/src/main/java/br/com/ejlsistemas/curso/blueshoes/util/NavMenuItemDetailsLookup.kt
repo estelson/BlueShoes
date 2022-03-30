@@ -1,6 +1,6 @@
 package br.com.ejlsistemas.curso.blueshoes.util
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.MotionEvent
 import androidx.recyclerview.selection.ItemDetailsLookup
 import br.com.ejlsistemas.curso.blueshoes.view.NavMenuItemsAdapter
