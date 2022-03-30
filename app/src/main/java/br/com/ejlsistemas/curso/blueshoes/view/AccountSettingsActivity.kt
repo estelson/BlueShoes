@@ -24,7 +24,7 @@ class AccountSettingsActivity: AppCompatActivity() {
         /*
          * Colocando em tela o usuário conectado.
          * */
-        val user = intent.getParcelableExtra<User>(User.KEY)
+        val user = getUser()
         tv_user_connected.text = String.format(
             "%s %s",
             getString(R.string.connected),
@@ -60,5 +60,12 @@ class AccountSettingsActivity: AppCompatActivity() {
 
         rv_account_settings_items.adapter = AccountSettingsItemsAdapter(AccountSettingsItemsDataBase.getItems(this))
     }
+
+    /*
+     * Método que permitirá o acesso ao User em Intent
+     * também por parte de outros objetos dependentes de
+     * AccountSettingsActivity.
+     * */
+    fun getUser() = intent.getParcelableExtra<User>(User.KEY)
 
 }

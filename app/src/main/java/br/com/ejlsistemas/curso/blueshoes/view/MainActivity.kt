@@ -32,7 +32,7 @@ class MainActivity: AppCompatActivity() {
     val user = User(
         "Estelson Medeiros Pereira",
         R.drawable.user,
-        false
+        true
     )
 
     lateinit var navMenuItems: List<NavMenuItem>
