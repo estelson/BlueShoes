@@ -1,5 +1,6 @@
 package br.com.ejlsistemas.curso.blueshoes.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.constraint.ConstraintLayout
 import android.support.constraint.ConstraintSet
@@ -8,6 +9,7 @@ import br.com.ejlsistemas.curso.blueshoes.R
 import br.com.ejlsistemas.curso.blueshoes.util.isValidEmail
 import br.com.ejlsistemas.curso.blueshoes.util.isValidPassword
 import br.com.ejlsistemas.curso.blueshoes.util.validate
+import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.ScreenUtils
 import kotlinx.android.synthetic.main.content_sign_up.*
 
@@ -60,8 +62,6 @@ class SignUpActivity: FormEmailAndPasswordActivity() {
     }
 
     override fun getLayoutResourceID() = R.layout.content_sign_up
-
-
     override fun blockFields(status: Boolean) {
         et_email.isEnabled = !status
         et_password.isEnabled = !status
@@ -95,7 +95,17 @@ class SignUpActivity: FormEmailAndPasswordActivity() {
     }
 
     fun callLoginActivity(view: View) {
-        finish()
+        /*
+         * Para evitar que tenhamos mais de uma
+         * LoginActivity na pilha de atividades.
+         * */
+        if(ActivityUtils.isActivityExistsInStack(LoginActivity::class.java)) {
+            finish()
+        } else {
+            val intent = Intent(this, LoginActivity::class.java)
+
+            startActivity(intent)
+        }
     }
 
 }

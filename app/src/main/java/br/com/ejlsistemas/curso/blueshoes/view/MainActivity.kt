@@ -32,7 +32,7 @@ class MainActivity: AppCompatActivity() {
     val user = User(
         "Estelson Medeiros Pereira",
         R.drawable.user,
-        true
+        false
     )
 
     lateinit var navMenuItems: List<NavMenuItem>
@@ -275,6 +275,15 @@ class MainActivity: AppCompatActivity() {
              * */
             selectNavMenuItems.select(fragId!!.toLong())
         }
+    }
+
+    /*
+     * Abrir da atividade SignUpActivity pelo menu gaveta (usuário não logado)
+     * */
+    fun callSignUpActivity( view: View ){
+        val intent = Intent(this, SignUpActivity::class.java)
+
+        startActivity( intent )
     }
 
     /*

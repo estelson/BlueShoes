@@ -9,6 +9,7 @@ import br.com.ejlsistemas.curso.blueshoes.R
 import br.com.ejlsistemas.curso.blueshoes.util.isValidEmail
 import br.com.ejlsistemas.curso.blueshoes.util.isValidPassword
 import br.com.ejlsistemas.curso.blueshoes.util.validate
+import com.blankj.utilcode.util.ActivityUtils
 import com.blankj.utilcode.util.ScreenUtils
 import kotlinx.android.synthetic.main.content_login.*
 
@@ -54,22 +55,25 @@ class LoginActivity: FormEmailAndPasswordActivity() {
     }
 
     fun callSignUpActivity(view: View) {
-        val intent = Intent(
-            this,
-            SignUpActivity::class.java
-        )
+        /*
+        * Para evitar que tenhamos mais de uma
+        * SignUpActivity na pilha de atividades.
+        * */
+        if(ActivityUtils.isActivityExistsInStack(SignUpActivity::class.java)) {
+            finish()
+        } else {
+            val intent = Intent(this, SignUpActivity::class.java)
 
-        startActivity(intent)
+            startActivity(intent)
+        }
     }
 
     override fun isAbleToCallChangePrivacyPolicyConstraints() = ScreenUtils.isPortrait()
-
     override fun backEndFakeDelay() {
         backEndFakeDelay(false, getString(R.string.invalid_login))
     }
 
     override fun getLayoutResourceID() = R.layout.content_login
-
     /*
      * Necessário para que os campos de formulário não possam
      * ser acionados depois de enviados os dados.
