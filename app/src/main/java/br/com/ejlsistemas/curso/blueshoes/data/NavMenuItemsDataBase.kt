@@ -86,4 +86,50 @@ class NavMenuItemsDataBase(context: Context) {
 
     fun getFirstItemLoggedId() = itemsLogged.first().id
 
+    companion object {
+        const val SP_NAME = "SP_NAV_MENU"
+        const val SP_ITEM_ID_KEY = "item-id"
+        const val SP_IS_ACTIVITY_KEY = "is-activity"
+    }
+
+    private fun getSP(context: Context) = context.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE)
+
+    /*
+    * Salva o ID do último item de menu selecionado que
+    * aciona um fragmento.
+    * */
+    fun saveLastSelectedItemFragmentID(context: Context, itemID: Long) {
+        val sp = getSP(context)
+        sp.edit().putLong(SP_ITEM_ID_KEY, itemID).apply()
+    }
+
+    /*
+     * Retorna o ID do último item de menu selecionado que
+     * aciona um fragmento.
+     * */
+    fun getLastSelectedItemFragmentID(context: Context): Long {
+        val sp = getSP(context)
+
+        return sp.getLong(SP_ITEM_ID_KEY, 0)
+    }
+
+    /*
+     * Salva se o último item de menu acionado foi ou não
+     * um item que aciona uma atividade.
+     * */
+    fun saveIsActivityItemFired(context: Context, isActivity: Boolean) {
+        val sp = getSP(context)
+        sp.edit().putBoolean(SP_IS_ACTIVITY_KEY, isActivity).apply()
+    }
+
+    /*
+     * Informa se o último item de menu acionado foi ou não
+     * um item que aciona uma atividade.
+     * */
+    fun wasActivityItemFired(context: Context): Boolean {
+        val sp = getSP(context)
+
+        return sp.getBoolean(SP_IS_ACTIVITY_KEY, false)
+    }
+
 }
