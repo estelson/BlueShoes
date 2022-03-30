@@ -43,6 +43,12 @@ abstract class FormActivity: AppCompatActivity(), TextView.OnEditorActionListene
          * layout.
          * */
         window.setBackgroundDrawableResource(R.drawable.bg_activity)
+
+        /*
+         * Colocando a View de um arquivo XML como View filha
+         * do item indicado no terceiro argumento.
+         * */
+        View.inflate(this, getLayoutResourceID(), fl_form)
     }
 
     /*
@@ -108,28 +114,28 @@ abstract class FormActivity: AppCompatActivity(), TextView.OnEditorActionListene
     }
 
     /*
+     * Método template.
+     *
+     * Responsável por conter o algoritmo de envio / validação
+     * de dados. Algoritmo vinculado ao menos ao principal
+     * botão em tela.
+     * */
+    fun mainAction(view: View? = null) {
+        blockFields(true)
+        isMainButtonSending(true)
+        showProxy(true)
+        backEndFakeDelay()
+    }
+
+    /*
      * Fake method - Somente para testes temporários em atividades
      * e fragmentos que contêm formulários.
+     *
+     * Método único
      * */
-    protected fun backEndFakeDelay(statusAction: Boolean, feedbackMessage: String) {
-        Thread {
-            kotlin.run {
-                /*
-                 * Simulando um delay de latência de
-                 * 1 segundo.
-                 * */
-                SystemClock.sleep(1000)
+    abstract fun backEndFakeDelay(): Unit
 
-                runOnUiThread {
-                    blockFields(false)
-                    isMainButtonSending(false)
-                    showProxy(false)
-
-                    snackBarFeedback(fl_form_container, statusAction, feedbackMessage)
-                }
-            }
-        }.start()
-    }
+    abstract fun getLayoutResourceID(): Int
 
     /*
      * Para permitir que o back button tenha a ação de volta para
@@ -157,13 +163,6 @@ abstract class FormActivity: AppCompatActivity(), TextView.OnEditorActionListene
     }
 
     /*
-     * Responsável por conter o algoritmo de envio / validação
-     * de dados. Algoritmo vinculado ao menos ao principal
-     * botão em tela.
-     * */
-    abstract fun mainAction(view: View? = null)
-
-    /*
      * Necessário para que os campos de formulário não possam
      * ser acionados depois de enviados os dados.
      * */
@@ -174,5 +173,29 @@ abstract class FormActivity: AppCompatActivity(), TextView.OnEditorActionListene
      * do envio de dados.
      * */
     abstract fun isMainButtonSending(status: Boolean)
+
+    /*
+     * Fake method - Somente para testes temporários em atividades
+     * e fragmentos que contêm formulários.
+     * */
+    protected fun backEndFakeDelay(statusAction: Boolean, feedbackMessage: String) {
+        Thread {
+            kotlin.run {
+                /*
+                 * Simulando um delay de latência de
+                 * 1 segundo.
+                 * */
+                SystemClock.sleep(1000)
+
+                runOnUiThread {
+                    blockFields(false)
+                    isMainButtonSending(false)
+                    showProxy(false)
+
+                    snackBarFeedback(fl_form_container, statusAction, feedbackMessage)
+                }
+            }
+        }.start()
+    }
 
 }

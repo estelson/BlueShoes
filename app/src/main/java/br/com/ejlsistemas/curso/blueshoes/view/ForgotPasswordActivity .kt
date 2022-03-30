@@ -1,12 +1,10 @@
 package br.com.ejlsistemas.curso.blueshoes.view
 
 import android.os.Bundle
-import android.view.View
 import br.com.ejlsistemas.curso.blueshoes.R
 import br.com.ejlsistemas.curso.blueshoes.util.isValidEmail
 import br.com.ejlsistemas.curso.blueshoes.util.validate
 import kotlinx.android.synthetic.main.content_forgot_password.*
-import kotlinx.android.synthetic.main.content_form.*
 import kotlinx.android.synthetic.main.content_login.et_email
 import kotlinx.android.synthetic.main.info_block.*
 
@@ -14,12 +12,6 @@ class ForgotPasswordActivity: FormActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        /*
-         * Colocando a View de um arquivo XML como View filha
-         * do item indicado no terceiro argumento.
-         * */
-        View.inflate(this, R.layout.content_forgot_password, fl_form)
 
         /*
          * Colocando configuração de validação de campo de email
@@ -36,13 +28,12 @@ class ForgotPasswordActivity: FormActivity() {
         tv_info_block.text = getString(R.string.forgot_password_info)
     }
 
-    override fun mainAction(view: View?) {
-        blockFields(true)
-        isMainButtonSending(true)
-        showProxy(true)
-
+    override fun backEndFakeDelay() {
         backEndFakeDelay(false, getString(R.string.invalid_login_email))
     }
+
+    override fun getLayoutResourceID() = R.layout.content_forgot_password
+
 
     override fun blockFields(status: Boolean) {
         et_email.isEnabled = !status
