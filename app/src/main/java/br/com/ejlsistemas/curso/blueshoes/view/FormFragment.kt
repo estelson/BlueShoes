@@ -8,11 +8,9 @@ import android.os.SystemClock
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.ImageSpan
-import android.view.KeyEvent
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.EditText
+import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -23,9 +21,10 @@ import br.com.ejlsistemas.curso.blueshoes.util.isValidPassword
 import br.com.ejlsistemas.curso.blueshoes.util.validate
 import com.blankj.utilcode.util.ColorUtils
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_form.*
 import kotlinx.android.synthetic.main.proxy_screen.*
 
-abstract class FormFragment: Fragment(), TextView.OnEditorActionListener {
+abstract class FormFragment : Fragment(), TextView.OnEditorActionListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val viewContainer = inflater.inflate(R.layout.fragment_form, container, false) as ViewGroup
@@ -57,7 +56,7 @@ abstract class FormFragment: Fragment(), TextView.OnEditorActionListener {
      * deve aguardar.
      * */
     protected fun showProxy(status: Boolean) {
-        fl_proxy_container.visibility = if(status) {
+        fl_proxy_container.visibility = if (status) {
             View.VISIBLE
         } else {
             View.GONE
@@ -75,14 +74,14 @@ abstract class FormFragment: Fragment(), TextView.OnEditorActionListener {
          * Criando o objeto Drawable que entrará como ícone
          * inicial no texto do SnackBar.
          * */
-        val iconResource = if(status) {
+        val iconResource = if (status) {
             R.drawable.ic_check_black_18dp
         } else {
             R.drawable.ic_close_black_18dp
         }
         val img = ResourcesCompat.getDrawable(resources, iconResource, null)
         img!!.setBounds(0, 0, img.intrinsicWidth, img.intrinsicHeight)
-        val iconColor = if(status) {
+        val iconColor = if (status) {
             ContextCompat.getColor(activity!!, R.color.colorNavButton)
         } else {
             Color.RED
@@ -109,12 +108,12 @@ abstract class FormFragment: Fragment(), TextView.OnEditorActionListener {
     }
 
     /*
- * Método responsável por invocar o Dialog de password antes
- * que o envio do formulário ocorra. Dialog necessário em
- * alguns formulários críticos onde parte da validação é a
- * verificação da senha.
- * */
-    protected fun callPasswordDialog() {
+     * Método responsável por invocar o Dialog de password antes
+     * que o envio do formulário ocorra. Dialog necessário em
+     * alguns formulários críticos onde parte da validação é a
+     * verificação da senha.
+     * */
+    fun callPasswordDialog() {
         val builder = AlertDialog.Builder(activity!!)
         val inflater = activity!!.layoutInflater
         /*
@@ -124,11 +123,11 @@ abstract class FormFragment: Fragment(), TextView.OnEditorActionListener {
          * está sendo inflado será o layout nativo do dialog.
          * */
         builder.setView(inflater.inflate(R.layout.dialog_password, null))
-                .setPositiveButton(R.string.dialog_password_go, { dialog, id -> mainAction() })
-                .setNegativeButton(R.string.dialog_password_cancel, { dialog, id -> dialog.cancel() }).setCancelable(false)
+            .setPositiveButton(R.string.dialog_password_go, { dialog, id -> mainAction() })
+            .setNegativeButton(R.string.dialog_password_cancel, { dialog, id -> dialog.cancel() }).setCancelable(false)
 
         val dialog = builder.create()
-        dialog.setOnShowListener(object: DialogInterface.OnShowListener {
+        dialog.setOnShowListener(object : DialogInterface.OnShowListener {
             override fun onShow(d: DialogInterface?) {
                 /*
                  * É preciso colocar qualquer configuração
@@ -166,6 +165,22 @@ abstract class FormFragment: Fragment(), TextView.OnEditorActionListener {
         isMainButtonSending(true)
         showProxy(true)
         backEndFakeDelay()
+    }
+
+    /*
+     * Método necessário para atualizar o ViewGroup
+     * fl_form, que é container dos layouts de formulários
+     * carregados em fragment_form, deixando ele
+     * pronto para receber uma lista de itens ou formulários
+     * que têm os próprios padding e posicionamento.
+     * */
+    fun updateFlFormToFullFreeScreen() {
+        fl_form.setPadding(0, 0, 0, 0)
+
+        val layoutParams = (fl_form.layoutParams as FrameLayout.LayoutParams)
+        layoutParams.gravity = Gravity.NO_GRAVITY
+        layoutParams.width = FrameLayout.LayoutParams.MATCH_PARENT
+        layoutParams.height = FrameLayout.LayoutParams.MATCH_PARENT
     }
 
     /*

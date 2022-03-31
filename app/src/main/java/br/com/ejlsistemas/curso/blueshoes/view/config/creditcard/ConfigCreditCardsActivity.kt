@@ -1,4 +1,4 @@
-package br.com.ejlsistemas.curso.blueshoes.view.config.connectiondata
+package br.com.ejlsistemas.curso.blueshoes.view.config.creditcard
 
 import android.os.Bundle
 import android.view.MenuItem
@@ -8,7 +8,7 @@ import br.com.ejlsistemas.curso.blueshoes.R
 import com.google.android.material.tabs.TabLayout
 import kotlinx.android.synthetic.main.activity_tabs_user_config.*
 
-class ConfigConnectionDataActivity: AppCompatActivity() {
+class ConfigCreditCardsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +35,7 @@ class ConfigConnectionDataActivity: AppCompatActivity() {
          * Criando o adaptador de fragmentos que ficarão expostos
          * no ViewPager.
          * */
-        val sectionsPagerAdapter = ConfigConnectionDataSectionsAdapter(this, supportFragmentManager)
+        val sectionsPagerAdapter = ConfigCreditCardsSectionsAdapter(this, supportFragmentManager)
 
         /*
          * Acessando o ViewPager e vinculando o adaptador de
@@ -58,7 +58,7 @@ class ConfigConnectionDataActivity: AppCompatActivity() {
      * a atividade anterior.
      * */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == android.R.id.home) {
+        if (item.itemId == android.R.id.home) {
             finish()
 
             return true
@@ -66,4 +66,5 @@ class ConfigConnectionDataActivity: AppCompatActivity() {
 
         return super.onOptionsItemSelected(item)
     }
+
 }
