@@ -33,4 +33,8 @@
     <color name="colorLighterGrey">#EFEFEF</color>
 
     <color name="colorLightRed">#F85F62</color>
+
+    <color name="colorLightBlue">#00A4FF</color>
+
+    <color name="colorTextBoxTransparent">#CCEEEEEE</color>
 </resources>

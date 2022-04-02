@@ -6,6 +6,7 @@ import br.com.ejlsistemas.curso.blueshoes.domain.AccountSettingItem
 import br.com.ejlsistemas.curso.blueshoes.view.ConfigProfileActivity
 import br.com.ejlsistemas.curso.blueshoes.view.config.connectiondata.ConfigConnectionDataActivity
 import br.com.ejlsistemas.curso.blueshoes.view.config.creditcard.ConfigCreditCardsActivity
+import br.com.ejlsistemas.curso.blueshoes.view.config.deliveryaddress.ConfigDeliveryAddressesActivity
 
 class AccountSettingsItemsDataBase {
 
@@ -26,7 +27,7 @@ class AccountSettingsItemsDataBase {
             AccountSettingItem(
                 context.getString(R.string.setting_item_address),
                 context.getString(R.string.setting_item_address_desc),
-                ConfigProfileActivity::class.java
+                ConfigDeliveryAddressesActivity::class.java
             ),
 
             AccountSettingItem(
